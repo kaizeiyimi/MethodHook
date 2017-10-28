@@ -26,7 +26,7 @@ public final class HookManager {
 
     private Map<Pair<String, String>, MethodHook> methodHookMap = new ConcurrentHashMap<>();
 
-    public void hookMethod(Method originMethod, Method hookMethod) {
+    public MethodHook hookMethod(Method originMethod, Method hookMethod) {
         if (originMethod == null || hookMethod == null) {
             throw new IllegalArgumentException("argument cannot be null");
         }
@@ -41,6 +41,8 @@ public final class HookManager {
         MethodHook methodHook = new MethodHook(originMethod, hookMethod);
         methodHookMap.put(key, methodHook);
         methodHook.hook();
+
+        return methodHook;
     }
 
     public void callOrigin(Object receiver, Object... args) {

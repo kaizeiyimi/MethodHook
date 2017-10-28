@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnHook = (Button) findViewById(R.id.hook);
         Button btnRestore = (Button) findViewById(R.id.restore);
 
+        final MethodHook[] hook = new MethodHook[1];
+
         btnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Method srcMethod = MainActivity.class.getDeclaredMethod("showToast", String.class);
                     Method destMethod = MainActivity.class.getDeclaredMethod("showHookToast", String.class);
-                    HookManager.get().hookMethod(srcMethod, destMethod);
+                    hook[0] = HookManager.get().hookMethod(srcMethod, destMethod);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         btnRestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hook[0].restore();
                 //hook 失败
 //                try {
 //                    HookManager.get().hookMethod(Toast.class.getDeclaredMethod("show"), MainActivity.class.getDeclaredMethod("Toast_show"));
